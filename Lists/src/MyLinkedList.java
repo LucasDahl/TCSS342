@@ -4,7 +4,7 @@
  *
  * @param <Type> the type of element in the list.
  */
-public class MyLinkedList <Type> {
+public class MyLinkedList <Type extends Comparable<Type>> {
 
     // **************************** Fields ****************************
 
@@ -13,6 +13,7 @@ public class MyLinkedList <Type> {
     private Node previous;
     private Node end;
     private int size;
+    public int comparisons;
 
     // ************************** Constructors ************************
 
@@ -24,6 +25,7 @@ public class MyLinkedList <Type> {
         current = null;
         previous = null;
         size = 0;
+        comparisons = 0;
     }
 
     // ************************** Inner Class **************************
@@ -61,7 +63,7 @@ public class MyLinkedList <Type> {
             first = new Node(item);
             first.next = current;
             previous = first;
-            end = first;
+
         } else {
 
             // Create the node
@@ -126,12 +128,9 @@ public class MyLinkedList <Type> {
      * @return the item of the first node
      */
     public Type first() {
-        if(first != null) {
-            current = first;
-            previous = null;
-            return current.item;
-        }
-        return null;
+        current = first;
+        previous = null;
+        return current.item;
     }
 
     /**
@@ -186,6 +185,7 @@ public class MyLinkedList <Type> {
         return temp;
     }
 
+
     /**
      * This method checks if an item is in the list.
      *
@@ -194,13 +194,19 @@ public class MyLinkedList <Type> {
      */
     public boolean contains(Type item) {
 
+        if (first == null || isEmpty()) {
+            return false;
+        }
+
         // Properties
         Node traversalNode = first;
 
         // See if the list contains the node
-        while (traversalNode.next != null) {
+        while (traversalNode != null) {
 
-            if(traversalNode.item == item) {
+            comparisons++;
+
+            if(traversalNode.item.compareTo(item) == 0) {
                 return true;
             }
 
@@ -300,4 +306,79 @@ public class MyLinkedList <Type> {
         return "[" + listStr.substring(1) + "]";
     }
 
+    /**
+     * This method will merge and sort the list.
+     */
+    public void sort() {
+        first = sort(first);
+    }
+
+    // **************************** Private Methods ***************************
+
+    // This method will sort the nodes
+    private Node sort(Node first) {
+
+        if(first == null || first.next == null) {
+            return first;
+        }
+
+        Node middle = getMiddle(first);
+        Node afterMiddle = middle.next;
+
+        middle.next = null;
+
+        Node leftSide = sort(first);
+        Node rightSide = sort(afterMiddle);
+
+        Node sortedNodes = merge(leftSide, rightSide);
+
+        return sortedNodes;
+
+
+    }
+
+    // This method will get the middle node
+    private Node getMiddle(Node first) {
+
+        if (first == null)
+            return first;
+
+        Node slow = first, fast = first;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+
+    }
+
+    // This method will merge the two linked lists.
+    private Node merge(Node left, Node right) {
+
+        Node tempNode = null;
+
+        if(left == null) {
+            return right;
+        }
+
+        if(right == null) {
+            return left;
+        }
+
+        if(left.item.compareTo(right.item) < 0) {
+            tempNode = left;
+            tempNode.next = merge(left.next, right);
+        } else {
+            tempNode = right;
+            tempNode.next = merge(left, right.next);
+        }
+
+        return tempNode;
+
+    }
+
+
+
 }
+
