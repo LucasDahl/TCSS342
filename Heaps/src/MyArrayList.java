@@ -206,13 +206,16 @@ public class MyArrayList <Type> {
     // This method will resize the ArrayList once it is at capacity.
     private void resize() {
 
+
         // Properties
-        Type[] temp = (Type[]) new Object[capacity * 2];
+        capacity = capacity * 2;
+        Type[] temp = (Type[]) (new Comparable[capacity]);
 
         // Fill the temp list
         for(int i = 0; i < size; i++) {
             temp[i] = list[i];
         }
+
 
         // Set the list to the temp list.
         list = temp;
@@ -220,4 +223,16 @@ public class MyArrayList <Type> {
     }
 
 
+    public void swap(int left, int right ){
+        Type temp = list[left];
+        list[left] = list[right];
+        list[right] = temp;
+    }
+    public void add(Type item){
+        list[size] = item;
+        size++;
+        if(size >= capacity){
+            resize();
+        }
+    }
 }
