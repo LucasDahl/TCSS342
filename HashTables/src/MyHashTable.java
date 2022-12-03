@@ -14,7 +14,6 @@ public class MyHashTable <Key, Value>{
     private Key[] keyBuckets;
     private Value[] valueBuckets;
     private Integer size;
-  //  public Set<Integer> set = new HashSet<>();
 
     public MyArrayList<Key> keys;
     public Integer comparisons;
@@ -68,50 +67,6 @@ public class MyHashTable <Key, Value>{
      */
     public void put(Key key, Value value) {
 
-        // Get the index
-//        int index = hash(key);
-//        int tempProbe = 0;
-//        int updateValue = 0;
-//
-//        do {
-//
-//            // Increment
-//            tempProbe++;
-//            comparisons++;
-//            updateValue++;
-//
-//            // Add the new value
-//            if(keyBuckets[index] == null) {
-//
-//                // Set the key and the value
-//                keyBuckets[index] = key;
-//                valueBuckets[index] = value;
-//
-//                // Increase the size
-//                size++;
-//
-//                // Add the key to the array list
-//                keys.insert(key, size - 1);
-//
-//                return;
-//            }
-//
-//            // Update the value
-//            if(keyBuckets[index].equals(key)) {
-//                valueBuckets[index] = value;
-//                comparisons = comparisons - updateValue;
-//                return;
-//            }
-//
-//            index = (index + 1) % capacity;
-//
-//
-//            if(tempProbe >= maxProbe) {
-//                maxProbe++;
-//            }
-//
-//
-//        } while(index != hash(key));
         // Get the index
         int tempProbe = 1;
         int index = hash(key);
